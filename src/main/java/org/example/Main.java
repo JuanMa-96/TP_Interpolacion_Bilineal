@@ -115,7 +115,7 @@ public class Main {
 
         try (FileWriter writer = new FileWriter(filePath)) {
             // Cabecera del archivo PGM
-            writer.write("P5\n");
+            writer.write("P2\n");
             writer.write(width + " " + height + "\n");
             writer.write("255\n");
 
