@@ -6,11 +6,11 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Main {
-    public static String pathIn = "/in/imagen_in.pgm";
-    public static String pathOut = "image_out.pgm";
+    private static String pathIn = "/in/imagen_in.pgm";
+    private static String fileNameOut = "image_out.pgm";
     public static void main(String[] args) throws IOException {
         // Cargamos la imagen con una ruta determinada
-        int[][] inputImage = loadImage(pathIn);
+        int[][] inputImage = loadImage();
 
         // Indicamos el tamaño de la imagen a reescalar
         int newWidth = 800;
@@ -20,7 +20,7 @@ public class Main {
         int[][] scaledImage = resizeImage(inputImage, newWidth, newHeight);
 
         // Guardamos el resultado
-        saveImage(scaledImage, newWidth, newHeight, pathOut);
+        saveImage(scaledImage, newWidth, newHeight);
     }
 
     public static int[][] resizeImage(int[][] originalImage, int newWidth, int newHeight) {
@@ -58,9 +58,9 @@ public class Main {
 
 
     // Metodo para cargar el mapa de escala de grises en una matriz
-    private static int[][] loadImage(String path) throws IOException {
+    private static int[][] loadImage() throws IOException {
         try {
-            InputStream fileInputStream = Main.class.getResourceAsStream(path);
+            InputStream fileInputStream = Main.class.getResourceAsStream(pathIn);
             Scanner scan = new Scanner(fileInputStream);
             System.out.println(scan.nextLine());
             int picWidth = scan.nextInt();
@@ -72,7 +72,7 @@ public class Main {
 
             fileInputStream.close();
 
-            fileInputStream = Main.class.getResourceAsStream(path);
+            fileInputStream = Main.class.getResourceAsStream(pathIn);
             DataInputStream dis = new DataInputStream(fileInputStream);
 
             // While para ignorar las lineas con simbolos raros al principio del archivo (header)
@@ -102,7 +102,7 @@ public class Main {
         return null;
     }
 
-    public static void saveImage(int[][] image, int width, int height, String fileName) {
+    public static void saveImage(int[][] image, int width, int height) {
         // Armamos el path para guardar la imagen
         String directory = "src\\main\\resources\\out";
         File dir = new File(directory);
@@ -111,7 +111,7 @@ public class Main {
         }
 
         // Genero el path completo del archivo de salida
-        String filePath = Paths.get(directory, fileName).toString();
+        String filePath = Paths.get(directory, fileNameOut).toString();
 
         try (FileWriter writer = new FileWriter(filePath)) {
             // Cabecera del archivo PGM
